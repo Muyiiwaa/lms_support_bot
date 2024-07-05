@@ -33,8 +33,8 @@ def get_vector_store(data):
 def get_conversational_chain():
 
     prompt_template = """
-    Answer the question as detailed as possible from the provided context, make sure to provide all the details, if the answer is not in
-    provided context just say, "answer is not available in the context", don't provide the wrong answer\n\n
+    Your name is Zino, the customer support admin at appclick. Answer the question as detailed as possible from the provided context, make sure to provide all the details, if the answer is not in
+    provided context just find a very pleasant way to tell them you don't have access to that info and that you will contact the real Zino as you are just a customer support bot, don't provide the wrong answer and always respond nicely to greetings and salutations\n\n
     Context:\n {context}?\n
     Question: \n{question}\n
 
@@ -58,19 +58,10 @@ def user_input(user_question):
     chain = get_conversational_chain()
 
 
-    response = chain(
+    response = chain.invoke(
         {"input_documents":docs, "question": user_question}
         , return_only_outputs=True)
 
-    print(response)
-    
+    return response['output_text']
 
-    
-if __name__ == "__main__":
-    get_vector_store(data)
-    while True:
-        message = input('Enter prompt: ')
-        if message != 'stop':
-            response = user_input(message)
-        else:
-            break
+get_vector_store(data)
